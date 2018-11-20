@@ -34,14 +34,11 @@ public class FindWord {
 	static HSSFCellStyle style;
 	static String[] white = new String[] { "老师", "顾问", "平行线" };
 	public static void main(String[] args) throws Exception{
-		boolean findAll = System.getProperty("findAll") != null;
 		File folder = new File("d:/group");
 		for(File t:folder.listFiles()) {
 			generate(t);
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("d:/重复名单.txt"), "utf-8"));
-		BufferedWriter allWriter = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream("d:/全部名单.txt"), "utf-8"));
 		System.out.println("-----------------重复学号---------------------");
 		bw.write("-----------------重复学号---------------------");
 		bw.newLine();
@@ -68,36 +65,22 @@ public class FindWord {
 			if (isInner(name)) {
 				continue;
 			}
-			if (findAll) {
-				dupNameMap.get(name).stream().forEach(t -> {
-					System.out.println(t);
+			if (dupNameMap.get(name).size() > 1) {
+				dupNameMap.get(name).forEach(t -> {
+					System.out.print("[" + t + "]");
 					try {
-						allWriter.write(t.toString());
-						allWriter.newLine();
+						bw.write("[" + t + "]");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				});
 			} else {
-
-				if (dupNameMap.get(name).size() > 1) {
-					dupNameMap.get(name).forEach(t -> {
-						System.out.print("[" + t + "]");
-						try {
-							bw.write("[" + t + "]");
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					});
-				} else {
-					continue;
-				}
-				System.out.println();
-				bw.newLine();
+				continue;
 			}
+			System.out.println();
+			bw.newLine();
 		}
 		bw.close();
-		allWriter.close();
 	}
 
 	private static boolean isInner(String name) {

@@ -3,7 +3,7 @@ package com.blue.findword;
 public class Role {
 	String name;
 	String clazz;
-
+	Long id;
 	public String getClazz() {
 		return clazz;
 	}
@@ -17,9 +17,7 @@ public class Role {
 	public void setName(String name) {
 		this.name = name.replaceAll("<img.*?/>", "");
 	}
-	
-	Long id;
-	
+
 	@Override
 	public String toString() {
 		return clazz + "_" + name;
