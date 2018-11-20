@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
@@ -39,29 +40,46 @@ public class Scaner {
 			}
 			doScan(t, obj);
 		}
-
+		obj.bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("d:/重复名单.txt"), "utf8"));
 		displayDupOfHasId(obj);
 		displayDupOfOnlyName(obj);
+		obj.bw.close();
 	}
 
 	private void displayDupOfHasId(ScanObject obj) {
 		obj.idMap.entrySet().stream().filter(t -> t.getValue().size() > 1).forEach(t -> {
-			System.out.print("学号：" + t.getKey() + " 重复[班级_姓名]有：");
+			StringBuilder sb = new StringBuilder("学号：" + t.getKey() + " 重复[班级_姓名]有：");
 			t.getValue().forEach(x -> {
-				System.out.print("[" + x + "]");
+				sb.append("[" + x + "]");
 			});
-			System.out.println();
+			sb.append("\r\n");
+			System.out.println(sb);
+			try {
+				obj.bw.write(sb.toString());
+				obj.bw.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		});
 
 	}
 
 	private void displayDupOfOnlyName(ScanObject obj) {
 		obj.map.entrySet().stream().filter(t -> t.getValue().size() > 1).forEach(t -> {
-			System.out.print("姓名：" + t.getKey() + " 重复班级有：");
+			StringBuilder sb = new StringBuilder("姓名：" + t.getKey() + " 重复[班级_姓名]有：");
+
 			t.getValue().forEach(x -> {
-				System.out.print("[" + x + "]");
+				sb.append("[" + x + "]");
 			});
-			System.out.println();
+			sb.append("\r\n");
+			System.out.println(sb);
+			try {
+				obj.bw.write(sb.toString());
+				obj.bw.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		});
 	}
 
