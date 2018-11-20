@@ -39,15 +39,12 @@ public class Scaner {
 			}
 			doScan(t, obj);
 		}
-		final boolean findAll = System.getProperty("findAll") == null ? false : true;
-		if (findAll) {
-			displayAll(obj);
-		} else {
-			displayHasId(obj);
-		}
+
+		displayDupOfHasId(obj);
+		displayDupOfOnlyName(obj);
 	}
 
-	private void displayHasId(ScanObject obj) {
+	private void displayDupOfHasId(ScanObject obj) {
 		obj.idMap.entrySet().stream().filter(t -> t.getValue().size() > 1).forEach(t -> {
 			System.out.print("学号：" + t.getKey() + " 重复[班级_姓名]有：");
 			t.getValue().forEach(x -> {
@@ -58,7 +55,7 @@ public class Scaner {
 
 	}
 
-	private void displayAll(ScanObject obj) {
+	private void displayDupOfOnlyName(ScanObject obj) {
 		obj.map.entrySet().stream().filter(t -> t.getValue().size() > 1).forEach(t -> {
 			System.out.print("姓名：" + t.getKey() + " 重复班级有：");
 			t.getValue().forEach(x -> {
